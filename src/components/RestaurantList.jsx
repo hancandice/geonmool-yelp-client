@@ -10,10 +10,26 @@ const RestaurantList = (props) => {
       try {
         const response = await RestaurantFinder.get("/");
         setRestaurants(response.data.data.restaurants);
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchData();
   }, [setRestaurants]);
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await RestaurantFinder.delete(`/${id}`);
+      console.log(response);
+      setRestaurants(
+        restaurants.filter((restaurant) => {
+          return restaurant.id !== id;
+        })
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleMenus = (restaurant) => {
     const menu = restaurant.menu;
@@ -98,7 +114,12 @@ const RestaurantList = (props) => {
                     <button className="btn btn-warning">수정하기</button>
                   </td>
                   <td>
-                    <button className="btn btn-danger">삭제하기</button>
+                    <button
+                      onClick={() => handleDelete(restaurant.id)}
+                      className="btn btn-danger"
+                    >
+                      삭제하기
+                    </button>
                   </td>
                 </tr>
               );

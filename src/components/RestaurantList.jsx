@@ -13,7 +13,7 @@ const RestaurantList = (props) => {
       } catch (err) {}
     };
     fetchData();
-  }, []);
+  }, [setRestaurants]);
 
   const handleMenus = (restaurant) => {
     const menu = restaurant.menu;

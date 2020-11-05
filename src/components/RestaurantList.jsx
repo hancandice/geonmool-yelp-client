@@ -20,14 +20,16 @@ const RestaurantList = (props) => {
     fetchData();
   }, [setRestaurants]);
 
-  const handleUpdate = (id) => {
+  const handleUpdate = (e, id) => {
+    e.stopPropagation();
     history.push(`/restaurants/${id}/update`);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (e, id) => {
+    e.stopPropagation();
     try {
       const response = await RestaurantFinder.delete(`/${id}`);
-      console.log(response);
+
       setRestaurants(
         restaurants.filter((restaurant) => {
           return restaurant.id !== id;
@@ -36,6 +38,10 @@ const RestaurantList = (props) => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleRestaurantSelect = (id) => {
+    history.push(`/restaurants/${id}`);
   };
 
   const handleMenus = (restaurant) => {
@@ -111,7 +117,10 @@ const RestaurantList = (props) => {
           {restaurants &&
             restaurants.map((restaurant) => {
               return (
-                <tr key={restaurant.id}>
+                <tr
+                  onClick={() => handleRestaurantSelect(restaurant.id)}
+                  key={restaurant.id}
+                >
                   <td>{restaurant.name}</td>
                   <td>{restaurant.location}</td>
                   <td>{handleMenus(restaurant)}</td>
@@ -119,8 +128,8 @@ const RestaurantList = (props) => {
                   <td>review</td>
                   <td>
                     <button
-                      onClick={() => {
-                        handleUpdate(restaurant.id);
+                      onClick={(e) => {
+                        handleUpdate(e, restaurant.id);
                       }}
                       className="btn btn-warning"
                     >
@@ -129,7 +138,9 @@ const RestaurantList = (props) => {
                   </td>
                   <td>
                     <button
-                      onClick={() => handleDelete(restaurant.id)}
+                      onClick={(e) => {
+                        handleDelete(e, restaurant.id);
+                      }}
                       className="btn btn-danger"
                     >
                       삭제하기

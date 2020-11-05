@@ -1,9 +1,12 @@
 import React, { useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import RestaurantFinder from "../apis/RestaurantFinder";
 import { RestaurantsContext } from "../context/RestaurantsContext";
 
 const RestaurantList = (props) => {
   const { restaurants, setRestaurants } = useContext(RestaurantsContext);
+
+  let history = useHistory();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,6 +19,10 @@ const RestaurantList = (props) => {
     };
     fetchData();
   }, [setRestaurants]);
+
+  const handleUpdate = (id) => {
+    history.push(`/restaurants/${id}/update`);
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -111,7 +118,14 @@ const RestaurantList = (props) => {
                   <td>{handlePrices(restaurant)}</td>
                   <td>review</td>
                   <td>
-                    <button className="btn btn-warning">수정하기</button>
+                    <button
+                      onClick={() => {
+                        handleUpdate(restaurant.id);
+                      }}
+                      className="btn btn-warning"
+                    >
+                      수정하기
+                    </button>
                   </td>
                   <td>
                     <button

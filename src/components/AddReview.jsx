@@ -1,21 +1,45 @@
 import React, { useState } from "react";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import RestaurantFinder from "../apis/RestaurantFinder";
 
 const AddReview = () => {
+  const { id } = useParams();
+  const location = useLocation();
+  const history = useHistory();
   const [name, setName] = useState("");
   const [rating, setRating] = useState("평점");
   const [reviewText, setReviewText] = useState("");
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await RestaurantFinder.post(`/${id}/add-review`, {
+        name,
+        rating,
+        review: reviewText,
+      });
+
+      // =========== ** REDUX 추가하기 * ===========
+      history.push("/");
+      history.push(location.pathname);
+    } catch (err) {}
+
+    // 리뷰를 추가했을 때 화면이 전체적으로 재로딩되면서 모든 것들이 새롭게 리프레시 ?
+    // This is where a state management library like redux comes in handy to update the state application wide and refresh the page.
+  };
 
   return (
     <div className="mb-2">
       <form action="">
         <div className="form-row">
           <div className="form-group col-8">
-            <label htmlFor="name">이름</label>
+            <label htmlFor="name">작성자 이름</label>
             <input
               type="text"
               className="form-control"
               id="name"
-              placeholder="이름"
+              placeholder="예) 링키 대표 홍길동"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -44,9 +68,14 @@ const AddReview = () => {
             className="form-control"
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
+            placeholder="식당 후기를 남겨주세요 ~"
           ></textarea>
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={handleSubmitReview}
+        >
           등록하기
         </button>
       </form>

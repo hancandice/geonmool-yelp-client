@@ -1,1 +1,1 @@
-// start from Postgres Aggregate functions (5:48:05)
+// start from SQL joins (5:57:26)

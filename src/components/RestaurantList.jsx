@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import RestaurantFinder from "../apis/RestaurantFinder";
 import { RestaurantsContext } from "../context/RestaurantsContext";
+import StarRating from "./StarRating";
 
 const RestaurantList = (props) => {
   const { restaurants, setRestaurants } = useContext(RestaurantsContext);
@@ -29,7 +30,7 @@ const RestaurantList = (props) => {
     e.stopPropagation();
     try {
       const response = await RestaurantFinder.delete(`/${id}`);
-
+      console.log(response);
       setRestaurants(
         restaurants.filter((restaurant) => {
           return restaurant.id !== id;
@@ -99,6 +100,10 @@ const RestaurantList = (props) => {
     return null;
   };
 
+  const renderRating = (restaurant) => {
+    return <StarRating rating={3.4423} />;
+  };
+
   return (
     <div className="list-group">
       <table className="table table-hover table-dark">
@@ -125,7 +130,7 @@ const RestaurantList = (props) => {
                   <td>{restaurant.location}</td>
                   <td>{handleMenus(restaurant)}</td>
                   <td>{handlePrices(restaurant)}</td>
-                  <td>review</td>
+                  <td>{renderRating(restaurant)}</td>
                   <td>
                     <button
                       onClick={(e) => {

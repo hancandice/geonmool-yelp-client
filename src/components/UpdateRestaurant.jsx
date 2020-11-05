@@ -18,6 +18,7 @@ const UpdateRestaurant = (props) => {
       menu,
       price_range: priceRange,
     });
+    console.log(updatedRestaurant);
     history.push("/");
   };
 
@@ -36,7 +37,7 @@ const UpdateRestaurant = (props) => {
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
   return (
     <div>

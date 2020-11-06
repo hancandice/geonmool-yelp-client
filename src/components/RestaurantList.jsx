@@ -101,7 +101,15 @@ const RestaurantList = (props) => {
   };
 
   const renderRating = (restaurant) => {
-    return <StarRating rating={3.4423} />;
+    if (!restaurant.count) {
+      return <span className="text-warning">리뷰 없음</span>;
+    }
+    return (
+      <>
+        <StarRating rating={restaurant.average_rating} />
+        <span className="text-warning ml-1">({restaurant.count})</span>
+      </>
+    );
   };
 
   return (
@@ -113,7 +121,7 @@ const RestaurantList = (props) => {
             <th scope="col">주소</th>
             <th scope="col">메뉴</th>
             <th scope="col">가격대(1인)</th>
-            <th scope="col">평점</th>
+            <th scope="col">평균 평점</th>
             <th scope="col">수정하기</th>
             <th scope="col">삭제하기</th>
           </tr>

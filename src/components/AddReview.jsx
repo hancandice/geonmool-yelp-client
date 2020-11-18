@@ -14,7 +14,7 @@ const AddReview = () => {
     e.preventDefault();
 
     try {
-      const response = await RestaurantFinder.post(`/${id}/add-review`, {
+      await RestaurantFinder.post(`/${id}/add-review`, {
         name,
         rating,
         review: reviewText,
